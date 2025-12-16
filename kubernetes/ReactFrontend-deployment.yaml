@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: em-frontend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: em-frontend
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: em-frontend
+    spec:
+      containers:
+        - name: em-frontend
+          image: destroyerxx/em-react-frontend:1.3
+          ports:
+            - containerPort: 80

@@ -1,16 +1,17 @@
 #stage 1: build react
-FROM node:16 AS BUILD
+FROM node:16-alpine AS build
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
 RUN npm run build 
 
 #stage 2: serve with nginx
-FROM nginx:stable
-COPY --from=BUILD /app/build /usr/share/nginx/html
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
